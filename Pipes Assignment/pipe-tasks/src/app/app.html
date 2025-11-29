@@ -1,0 +1,57 @@
+<div class="wrapper">
+  <h2>TASKS BACKLOG 🐸</h2>
+
+  <div class="filter-row">
+    <input type="text" [(ngModel)]="taskName" placeholder="Search tasks by name..." />
+    <select [(ngModel)]="statusFilter">
+      <option value="all">Status: All</option>
+      <option value="done">Done</option>
+      <option value="pending">Pending</option>
+    </select>
+    <input type="text" [(ngModel)]="taskName" placeholder="Task name" />
+    <input type="date" [(ngModel)]="deadline" />
+    <input type="number" [(ngModel)]="count" placeholder="0" />
+    <button class="btn-primary" (click)="addTask()">Add Task</button>
+    <button class="btn-secondary" (click)="clearAll()">Clear All</button>
+  </div>
+
+  <table class="tasks-table">
+    <thead>
+      <tr>
+        <th>ID</th><th>Task name</th><th>Deadline</th><th>Count</th><th>Status (Frog)</th><th>Queued</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of filteredTasks" [class.done-row]="task.done" [@fadeInRow]>
+        <td>{{ task.id }}</td>
+        <td>{{ task.name }}</td>
+        <td>{{ task.deadline }}</td>
+        <td>{{ task.count }}</td>
+        <td>
+          <span class="status" [ngClass]="task.done ? 'done' : 'pending'">
+            🐸 {{ task.done ? 'Done' : 'Pending' }}
+          </span>
+        </td>
+        <td>
+          <div [ngSwitch]="task.queued">
+            <button *ngSwitchCase="false" class="btn-primary" (click)="toggleQueued(task)">
+              Add
+            </button>
+            <button *ngSwitchCase="true" class="btn-danger" (click)="toggleQueued(task)">
+              Remove
+            </button>
+          </div>
+        </td>
+        <td class="actions-cell">
+          <button class="btn-secondary" (click)="editTask(task)">Edit</button>
+          <button class="btn-danger" (click)="deleteTask(task)">Delete</button>
+          <button class="btn-primary" (click)="markDone(task)">
+            {{ task.done ? 'Undo' : 'Mark Done' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">Total tasks: {{ filteredTasks.length }}</div>
+</div>
