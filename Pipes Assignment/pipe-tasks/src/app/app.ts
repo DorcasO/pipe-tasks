@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, style, animate, transition } from '@angular/animations';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 interface Task {
@@ -17,7 +16,7 @@ interface Task {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, BrowserAnimationsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
   animations: [  // ✅ Don't comment out this block!
@@ -41,6 +40,52 @@ export class AppComponent {
 
   constructor() {
     this.loadTasks();
+    // Load sample tasks if localStorage is empty
+    if (this.tasks.length === 0) {
+      this.tasks = [
+        {
+          id: 1,
+          name: 'Design database schema',
+          deadline: '2025-12-05',
+          count: 3,
+          done: false,
+          queued: true
+        },
+        {
+          id: 2,
+          name: 'Setup authentication',
+          deadline: '2025-12-10',
+          count: 5,
+          done: true,
+          queued: false
+        },
+        {
+          id: 3,
+          name: 'Build API endpoints',
+          deadline: '2025-12-15',
+          count: 8,
+          done: false,
+          queued: false
+        },
+        {
+          id: 4,
+          name: 'Write unit tests',
+          deadline: '2025-12-08',
+          count: 12,
+          done: false,
+          queued: true
+        },
+        {
+          id: 5,
+          name: 'Deploy to production',
+          deadline: '2025-12-20',
+          count: 2,
+          done: false,
+          queued: false
+        }
+      ];
+      this.saveTasks();
+    }
   }
 
   get filteredTasks(): Task[] {
